@@ -1,0 +1,13 @@
+.search-form {
+    /* margin: auto; */
+    margin-left: 50px; 
+    margin-top: 100px;
+    min-width: 200px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .search-full-width {
+    width: 100%;
+  }
+  
