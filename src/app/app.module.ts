@@ -48,6 +48,7 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   exports: [
@@ -94,7 +95,8 @@ export class MaterialModules {}
     AppComponent,
     MainScreenComponent,
     SearchComponent,
-    RecorderComponent
+    RecorderComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,

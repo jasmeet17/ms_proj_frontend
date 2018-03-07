@@ -82,6 +82,10 @@ export class RecorderComponent implements OnInit {
     stream.getAudioTracks().forEach(track => track.stop());
   }
 
+  fetchResult() {
+    console.log("Get the result!");
+  }
+
   download() {
     this.recordRTC.save('sample.ogg');
   }

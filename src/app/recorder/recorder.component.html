@@ -1,14 +1,17 @@
 <div class="row">
   <div class="col-xs-12">
-    <!-- <video #video class="video"></video> -->
     <audio #audio class="audio"></audio>
   </div>
 </div>
-
+<br>
 <div class="row audio_tools">
     <div class="col-xs-12">
       <button md-raised-button color="primary" (click)="startRecording()"> Record </button>
       <button md-raised-button color="primary"(click) ="stopRecording()"> Stop</button>
       <button md-raised-button color="primary" (click)="download()"> Download</button>
     </div>
+</div>
+<br><br><br>
+<div class="row audio_tools">
+  <button md-raised-button color="primary" (click)="fetchResult()"> Get Result </button>
 </div>
