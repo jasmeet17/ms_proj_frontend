@@ -14,6 +14,7 @@ import { SearchComponent } from './search/search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -106,7 +107,8 @@ export class MaterialModules {}
     FormsModule,
     HttpModule,
     JsonpModule,
-    MaterialModules
+    MaterialModules,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

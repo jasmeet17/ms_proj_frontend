@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Http,Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var require: any;
 let RecordRTC = require('recordrtc/RecordRTC.min.js');
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'recorder',
@@ -9,12 +12,18 @@ let RecordRTC = require('recordrtc/RecordRTC.min.js');
 })
 export class RecorderComponent implements OnInit {
 
+  // readonly ROOT_URL = 'https://reqres.in/api/users?page=2';
+  // readonly ROOT_URL = 'http://localhost:5000/';
+  readonly ROOT_URL = 'http://localhost:5000/upload';
   private stream: MediaStream;
   private recordRTC: any;
+  private file:File;
+
+  results:any;
 
   @ViewChild('audio') audio;
 
-  constructor() { }
+  constructor(private http: HttpClient){ } //, private http:Http) { }
 
   ngOnInit() {
   }
@@ -71,8 +80,6 @@ export class RecorderComponent implements OnInit {
     navigator.mediaDevices
       .getUserMedia(mediaConstraints)
       .then(this.successCallback.bind(this), this.errorCallback.bind(this));
-
-
   }
 
   stopRecording() {
@@ -83,8 +90,36 @@ export class RecorderComponent implements OnInit {
   }
 
   fetchResult() {
-    console.log("Get the result!");
+    // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
+
+    var blob = this.recordRTC.getBlob();
+
+    var file = new File([blob], 'xability.ogg', {
+        type: 'audio/ogg'
+    });
+
+    
+
+    var formData = new FormData();
+    //formData.append('file', file); // upload "File" object rather than a "Blob"
+    formData.append('file_audio', file, 'xability.ogg');
+    this.uploadToServer(formData);
+
   }
+
+  uploadToServer(formData:FormData){
+
+    // this.http.get(this.ROOT_URL).subscribe(data => {
+    //   console.log(data);
+    // });
+
+    var headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Accept', 'application/json');
+    
+    this.http.put(this.ROOT_URL, formData, {headers: headers})
+        .subscribe(() => console.log("request done with success"));
+        }
 
   download() {
     this.recordRTC.save('sample.ogg');
