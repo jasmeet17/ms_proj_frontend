@@ -93,33 +93,22 @@ export class RecorderComponent implements OnInit {
     // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
 
     var blob = this.recordRTC.getBlob();
-
-    var file = new File([blob], 'xability.ogg', {
+    var file = new File([blob], 'ability.ogg', {
         type: 'audio/ogg'
     });
 
-    
-
     var formData = new FormData();
-    //formData.append('file', file); // upload "File" object rather than a "Blob"
-    formData.append('file_audio', file, 'xability.ogg');
+    formData.append('audio_file', file, 'ability.ogg');
     this.uploadToServer(formData);
 
   }
 
   uploadToServer(formData:FormData){
 
-    // this.http.get(this.ROOT_URL).subscribe(data => {
-    //   console.log(data);
-    // });
-
-    var headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    headers.append('Accept', 'application/json');
-    
-    this.http.put(this.ROOT_URL, formData, {headers: headers})
-        .subscribe(() => console.log("request done with success"));
-        }
+    this.http.put(this.ROOT_URL,formData).subscribe(data => {
+      console.log(data);
+    });    
+  }
 
   download() {
     this.recordRTC.save('sample.ogg');
