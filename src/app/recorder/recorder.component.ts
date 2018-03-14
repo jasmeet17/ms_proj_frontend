@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { Http,Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SearchComponent } from '../search/search.component'
 declare var require: any;
 let RecordRTC = require('recordrtc/RecordRTC.min.js');
 import 'rxjs/add/operator/map';
@@ -14,6 +15,8 @@ export class RecorderComponent implements OnInit {
 
   // readonly ROOT_URL = 'https://reqres.in/api/users?page=2';
   // readonly ROOT_URL = 'http://localhost:5000/';
+  @ViewChild(SearchComponent) searchChild: SearchComponent;
+  @ViewChild('search_field') search_field: ElementRef;
   readonly ROOT_URL = 'http://localhost:5000/upload';
   private stream: MediaStream;
   private recordRTC: any;
@@ -46,7 +49,7 @@ export class RecorderComponent implements OnInit {
   successCallback(stream: MediaStream) {
 
     var options = {
-      mimeType : 'audio/ogg',
+      mimeType : 'audio/webm',
       audioBitsPerSecond: 128000,
       bitsPerSecond: 128000
     };
@@ -91,26 +94,29 @@ export class RecorderComponent implements OnInit {
 
   fetchResult() {
     // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
-
+    this.search_field.nativeElement.value = "Ability";
+    console.log('value :::::'+this.search_field.nativeElement.value);
+    // this.searchChild
+    /*
     var blob = this.recordRTC.getBlob();
-    var file = new File([blob], 'ability.ogg', {
-        type: 'audio/ogg'
+    
+    var file = new File([blob], 'abilit.webm', {
+        type: 'audio/webm'
     });
 
     var formData = new FormData();
-    formData.append('audio_file', file, 'ability.ogg');
+    formData.append('audio_file', file, 'abilit.webm');
     this.uploadToServer(formData);
-
+    */
   }
 
   uploadToServer(formData:FormData){
-
     this.http.put(this.ROOT_URL,formData).subscribe(data => {
       console.log(data);
     });    
   }
 
   download() {
-    this.recordRTC.save('sample.ogg');
+    this.recordRTC.save('sample.webm');
   }
 }

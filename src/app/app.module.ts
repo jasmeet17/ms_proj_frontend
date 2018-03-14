@@ -10,7 +10,7 @@ import { MainScreenComponent } from './main-screen/main-screen.component';
 import { RecorderComponent } from './recorder/recorder.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { SearchComponent } from './search/search.component';
+import { SearchComponent, DialogSoundFile } from './search/search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CdkTableModule} from '@angular/cdk/table';
 import { HttpModule, JsonpModule } from '@angular/http';
@@ -97,7 +97,8 @@ export class MaterialModules {}
     MainScreenComponent,
     SearchComponent,
     RecorderComponent,
-    ResultsComponent
+    ResultsComponent,
+    DialogSoundFile
   ],
   imports: [
     BrowserModule,
@@ -111,6 +112,7 @@ export class MaterialModules {}
     HttpClientModule
   ],
   providers: [],
+  entryComponents: [DialogSoundFile],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
