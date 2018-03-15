@@ -4,10 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { AppComponent } from './app.component';
 import { MainScreenComponent } from './main-screen/main-screen.component';
 import { RecorderComponent } from './recorder/recorder.component';
+
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { SearchComponent, DialogSoundFile } from './search/search.component';
@@ -50,6 +53,7 @@ import {
   MatTooltipModule
 } from '@angular/material';
 import { ResultsComponent } from './results/results.component';
+import { DataService } from './data.service';
 
 @NgModule({
   exports: [
@@ -111,7 +115,7 @@ export class MaterialModules {}
     MaterialModules,
     HttpClientModule
   ],
-  providers: [],
+  providers: [DataService],
   entryComponents: [DialogSoundFile],
   bootstrap: [AppComponent]
 })

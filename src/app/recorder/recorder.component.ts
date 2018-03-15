@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 import { Http,Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SearchComponent } from '../search/search.component'
+import { DataService} from '../data.service';
 declare var require: any;
 let RecordRTC = require('recordrtc/RecordRTC.min.js');
 import 'rxjs/add/operator/map';
@@ -21,14 +22,16 @@ export class RecorderComponent implements OnInit {
   private stream: MediaStream;
   private recordRTC: any;
   private file:File;
+  fileName:string;
 
   results:any;
 
   @ViewChild('audio') audio;
 
-  constructor(private http: HttpClient){ } //, private http:Http) { }
+  constructor(private http: HttpClient, private data: DataService){ } //, private http:Http) { }
 
   ngOnInit() {
+    this.data.currentMessage.subscribe(message => this.fileName = message)
   }
 
   ngAfterViewInit() {
@@ -46,6 +49,7 @@ export class RecorderComponent implements OnInit {
     //  audio.autoplay = !audio.autoplay;
   }
 
+  
   successCallback(stream: MediaStream) {
 
     var options = {
@@ -94,20 +98,17 @@ export class RecorderComponent implements OnInit {
 
   fetchResult() {
     // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
-    this.search_field.nativeElement.value = "Ability";
-    console.log('value :::::'+this.search_field.nativeElement.value);
-    // this.searchChild
-    /*
+   
     var blob = this.recordRTC.getBlob();
     
-    var file = new File([blob], 'abilit.webm', {
+    var file = new File([blob], this.fileName + '.webm', {
         type: 'audio/webm'
     });
 
     var formData = new FormData();
-    formData.append('audio_file', file, 'abilit.webm');
+    formData.append('audio_file', file, this.fileName + '.webm');
     this.uploadToServer(formData);
-    */
+    
   }
 
   uploadToServer(formData:FormData){
@@ -117,6 +118,6 @@ export class RecorderComponent implements OnInit {
   }
 
   download() {
-    this.recordRTC.save('sample.webm');
+    this.recordRTC.save(this.fileName + '.webm');
   }
 }

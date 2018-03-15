@@ -8,6 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {FormGroup} from '@angular/forms';
+import { DataService} from '../data.service';
 
 import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http'
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
   audio_sound = 'ability'
   last_audio_sound = ''
   sound_data = ''
+  message:string;
 
   readonly ROOT_URL = 'http://localhost:5000/';
   
@@ -34,7 +36,7 @@ export class SearchComponent implements OnInit {
 
   items: Array<Item>;
 
-  constructor(private http: Http, public dialog: MatDialog) { 
+  constructor(private data: DataService, private http: Http, public dialog: MatDialog) { 
     this.stateCtrl = new FormControl();
     this.filteredStates = this.stateCtrl.valueChanges
       .pipe(
@@ -49,6 +51,8 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.data.currentMessage.subscribe(message => this.message = message);
     
     this.http
       .get(Library.ASSETS_FOLER + Library.AUDIO_LIST)
@@ -60,7 +64,13 @@ export class SearchComponent implements OnInit {
       
   }
 
+  newMessage() {
+    this.data.changeMessage("Hello from Sibling")
+  }
+
+
   playSound() {
+    /*
     if(this.audio_sound == ''){
       this.openDialog('Please enter a valid file name.');
     }
@@ -86,6 +96,8 @@ export class SearchComponent implements OnInit {
 
       });
     }
+    */
+   this.newMessage()
   }
 
   playAudio(soundUrl:string){
