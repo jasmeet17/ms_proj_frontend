@@ -2,6 +2,15 @@
 
 body {
     padding-top: 80px; 
+    overflow-x: scroll;
+    overflow-y: hidden;
+ }
+ .toolbar{
+    background-color:#74AFAD; 
+    height: 15vh;
+    color: aliceblue;
+    font-size: 10vh;
+    font-family: "Comic Sans MS", cursive, sans-serif;
  }
  .starter-template {
      padding: 3rem 1.5rem;

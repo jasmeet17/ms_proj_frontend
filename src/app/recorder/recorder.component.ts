@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Inject } from '@angular/core';
 import { Http,Headers } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SearchComponent } from '../search/search.component'
 import { DataService} from '../data.service';
+import { ResultService } from '../result.services';
+import {MatDialog, MAT_DIALOG_DATA} from '@angular/material';
+
 declare var require: any;
 let RecordRTC = require('recordrtc/RecordRTC.min.js');
 import 'rxjs/add/operator/map';
@@ -20,6 +23,8 @@ export class RecorderComponent implements OnInit {
   @ViewChild('search_field') search_field: ElementRef;
   readonly ROOT_URL = 'http://localhost:5000/upload';
   private stream: MediaStream;
+  imageURL = '';
+  imageResult = ''
   private recordRTC: any;
   private file:File;
   fileName:string;
@@ -28,10 +33,11 @@ export class RecorderComponent implements OnInit {
 
   @ViewChild('audio') audio;
 
-  constructor(private http: HttpClient, private data: DataService){ } //, private http:Http) { }
+  constructor(private http: HttpClient, private data: DataService, private dataImage: ResultService, public dialog: MatDialog,){ } //, private http:Http) { }
 
   ngOnInit() {
     this.data.currentMessage.subscribe(message => this.fileName = message)
+    this.dataImage.currentImage.subscribe(message => this.imageURL = message);
   }
 
   ngAfterViewInit() {
@@ -90,34 +96,70 @@ export class RecorderComponent implements OnInit {
   }
 
   stopRecording() {
-    let recordRTC = this.recordRTC;
-    recordRTC.stopRecording(this.processVideo.bind(this));
-    let stream = this.stream;
-    stream.getAudioTracks().forEach(track => track.stop());
+    if (typeof this.recordRTC === 'undefined'){
+    }else{
+      let recordRTC = this.recordRTC;
+      recordRTC.stopRecording(this.processVideo.bind(this));
+      let stream = this.stream;
+      stream.getAudioTracks().forEach(track => track.stop());
+    }
   }
 
   fetchResult() {
     // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
    
-    var blob = this.recordRTC.getBlob();
+    if (typeof this.recordRTC === 'undefined'){
+      this.openDialog('Please record the audio first.');
+    }else{
+      var blob = this.recordRTC.getBlob();
     
-    var file = new File([blob], this.fileName + '.webm', {
-        type: 'audio/webm'
-    });
+      var file = new File([blob], this.fileName + '.webm', {
+          type: 'audio/webm'
+      });
 
-    var formData = new FormData();
-    formData.append('audio_file', file, this.fileName + '.webm');
-    this.uploadToServer(formData);
-    
+      var formData = new FormData();
+      formData.append('audio_file', file, this.fileName + '.webm');
+      this.uploadToServer(formData);
+    }
   }
 
   uploadToServer(formData:FormData){
     this.http.put(this.ROOT_URL,formData).subscribe(data => {
-      console.log(data);
+      if(data['result']==1){
+        this.imageURL = data['image_url']
+        this.imageResult = 'Result'
+      }else{
+        this.openDialog(data['error'])
+        this.imageResult = data['error']
+        this.imageURL = 'https://placeimg.com/640/480/tech'; 
+      }
+      this.dataImage.changeImageResult(this.imageURL);
+      this.dataImage.changeResult(this.imageResult);
+
     });    
   }
 
   download() {
-    this.recordRTC.save(this.fileName + '.webm');
+    if (typeof this.recordRTC === 'undefined'){
+      this.openDialog('Please record the audio first.');
+    }else{
+      this.recordRTC.save(this.fileName + '.webm');
+    }
   }
+
+  openDialog(dialogMessage:string) {
+    this.dialog.open(DialogApi, {
+      data: {
+        message: dialogMessage
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'dialog-api-error',
+  templateUrl: '../dialog-sound-file.html',
+})
+export class DialogApi {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }

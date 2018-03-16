@@ -1,6 +1,6 @@
 <form class="search-form">
   <mat-form-field class="search-full-width">
-    <input [(ngModel)]="audio_sound" matInput placeholder="Audio word" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
+    <input [(ngModel)]="audio_sound" matInput placeholder="Audio word" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" (ngModelChange)="audioFileNameChange($event)">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
         <span>{{ state.name }}</span> 

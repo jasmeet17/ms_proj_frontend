@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ResultService } from '../result.services';
 
 @Component({
   selector: 'results',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultsComponent implements OnInit {
 
-  constructor() { }
+  imageURL = ''
+  result = 'Result'
+  constructor(private dataImage: ResultService) { }
 
   ngOnInit() {
+    this.dataImage.currentImage.subscribe(message => this.imageURL = message);
+    this.dataImage.currentResult.subscribe(message => this.result = message);
   }
 
 }

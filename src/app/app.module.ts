@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { AppComponent } from './app.component';
 import { MainScreenComponent } from './main-screen/main-screen.component';
-import { RecorderComponent } from './recorder/recorder.component';
+import { RecorderComponent, DialogApi } from './recorder/recorder.component';
 
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -54,6 +54,7 @@ import {
 } from '@angular/material';
 import { ResultsComponent } from './results/results.component';
 import { DataService } from './data.service';
+import { ResultService } from './result.services';
 
 @NgModule({
   exports: [
@@ -102,7 +103,8 @@ export class MaterialModules {}
     SearchComponent,
     RecorderComponent,
     ResultsComponent,
-    DialogSoundFile
+    DialogSoundFile,
+    DialogApi
   ],
   imports: [
     BrowserModule,
@@ -115,8 +117,8 @@ export class MaterialModules {}
     MaterialModules,
     HttpClientModule
   ],
-  providers: [DataService],
-  entryComponents: [DialogSoundFile],
+  providers: [DataService,ResultService],
+  entryComponents: [DialogSoundFile, DialogApi],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

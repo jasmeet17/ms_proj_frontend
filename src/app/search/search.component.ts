@@ -27,7 +27,6 @@ export class SearchComponent implements OnInit {
   audio_sound = 'ability'
   last_audio_sound = ''
   sound_data = ''
-  message:string;
 
   readonly ROOT_URL = 'http://localhost:5000/';
   
@@ -52,7 +51,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
 
-    this.data.currentMessage.subscribe(message => this.message = message);
+    this.data.currentMessage.subscribe(message => this.audio_sound = message);
     
     this.http
       .get(Library.ASSETS_FOLER + Library.AUDIO_LIST)
@@ -64,13 +63,15 @@ export class SearchComponent implements OnInit {
       
   }
 
-  newMessage() {
-    this.data.changeMessage("Hello from Sibling")
+  newSound() {
+    this.data.changeSound(this.audio_sound);
   }
 
+  audioFileNameChange(event) {
+    this.newSound();
+  }
 
   playSound() {
-    /*
     if(this.audio_sound == ''){
       this.openDialog('Please enter a valid file name.');
     }
@@ -90,14 +91,14 @@ export class SearchComponent implements OnInit {
         if(this.sound_data['result']==1) {
           this.last_audio_sound=this.audio_sound;
           this.playAudio(this.sound_data['sound_url']);
+          
         }else{
           this.openDialog('File ' + this.audio_sound +' not found on server.');
         }
 
       });
     }
-    */
-   this.newMessage()
+    
   }
 
   playAudio(soundUrl:string){
@@ -118,7 +119,7 @@ export class SearchComponent implements OnInit {
 
 @Component({
   selector: 'dialog-sound-error',
-  templateUrl: './dialog-sound-file.html',
+  templateUrl: '../dialog-sound-file.html',
 })
 export class DialogSoundFile {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
