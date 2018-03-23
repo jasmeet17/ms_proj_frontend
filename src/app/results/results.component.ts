@@ -10,11 +10,13 @@ export class ResultsComponent implements OnInit {
 
   imageURL = ''
   result = 'Result'
+  results = [];
   constructor(private dataImage: ResultService) { }
 
   ngOnInit() {
-    this.dataImage.currentImage.subscribe(message => this.imageURL = message);
     this.dataImage.currentResult.subscribe(message => this.result = message);
+    this.dataImage.currentImage.subscribe(message => this.results.push(message));
+    this.results= [];
   }
 
 }

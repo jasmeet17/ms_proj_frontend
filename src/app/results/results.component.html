@@ -3,5 +3,10 @@
   <label class="result-label" id="result-label">{{result}}</label>
 </div>
 <div class="row justify-content-center">
-  <img id="result-image" [src]="imageURL" [alt]="result">
+  <!-- <img id="result-image" [src]="imageURL" [alt]="result"> -->
+  <ol>
+    <li *ngFor="let r of results">
+      {{ r }}
+    </li>
+  </ol>
 </div>

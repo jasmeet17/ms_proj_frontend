@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class ResultService {
 
-    private messageSource = new BehaviorSubject<string>("https://placeimg.com/640/480/tech");
+    private messageSource = new BehaviorSubject<string>("");
     private result = new BehaviorSubject<string>("Result");
   
   currentImage = this.messageSource.asObservable();

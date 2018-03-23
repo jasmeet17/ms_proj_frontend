@@ -21,7 +21,7 @@ export class RecorderComponent implements OnInit {
   // readonly ROOT_URL = 'http://localhost:5000/';
   @ViewChild(SearchComponent) searchChild: SearchComponent;
   @ViewChild('search_field') search_field: ElementRef;
-  readonly ROOT_URL = 'http://localhost:5000/upload';
+  readonly ROOT_URL = 'http://localhost:5000/dtwScore';
   private stream: MediaStream;
   imageURL = '';
   imageResult = ''
@@ -126,12 +126,13 @@ export class RecorderComponent implements OnInit {
   uploadToServer(formData:FormData){
     this.http.put(this.ROOT_URL,formData).subscribe(data => {
       if(data['result']==1){
-        this.imageURL = data['image_url']
+        // this.imageURL = data['image_url']
+        this.imageURL = data['dtw_score']
         this.imageResult = 'Result'
+        console.log('DTW SCORE :' + data['dtw_score']);
       }else{
         this.openDialog(data['error'])
         this.imageResult = data['error']
-        this.imageURL = 'https://placeimg.com/640/480/tech'; 
       }
       this.dataImage.changeImageResult(this.imageURL);
       this.dataImage.changeResult(this.imageResult);
