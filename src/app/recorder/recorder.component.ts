@@ -105,8 +105,8 @@ export class RecorderComponent implements OnInit {
     }
   }
 
+
   fetchResult() {
-    // this.results =this.http.get(this.ROOT_URL).map((res: Response) => res.json())
    
     if (typeof this.recordRTC === 'undefined'){
       this.openDialog('Please record the audio first.');
